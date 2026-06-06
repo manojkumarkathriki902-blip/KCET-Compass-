@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>KCET Compass — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g900:#081c15;--g800:#1b4332;--g700:#2d6a4f;--g600:#40916c;--g500:#52b788;--g400:#74c69d;--g200:#b7e4c7;--g100:#d8f3dc;--g50:#f0fdf4;
+  --gray900:#111827;--gray800:#1f2937;--gray700:#374151;--gray600:#4b5563;--gray500:#6b7280;--gray400:#9ca3af;--gray300:#d1d5db;--gray200:#e5e7eb;--gray100:#f3f4f6;--gray50:#f9fafb;
+  --red:#ef4444;--red100:#fee2e2;
+  --font:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;
+}
+body{font-family:var(--font);background:var(--g900);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;}
+
+/* BG pattern */
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(82,183,136,.12) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(45,106,79,.15) 0%,transparent 60%);pointer-events:none;}
+
+.page{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+
+/* BRAND */
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:40px;}
+.brand-icon{width:48px;height:48px;background:var(--g700);border-radius:12px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(82,183,136,.3);}
+.brand-name{font-size:22px;font-weight:600;color:#fff;letter-spacing:-.02em;}
+.brand-sub{font-size:13px;color:var(--g400);margin-top:1px;}
+
+/* TABS */
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(82,183,136,.15);border-radius:20px;padding:36px;width:100%;max-width:420px;backdrop-filter:blur(12px);}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:rgba(0,0,0,.3);border-radius:10px;padding:4px;margin-bottom:28px;}
+.tab{padding:9px;border:none;background:none;border-radius:7px;font-size:14px;font-weight:500;color:var(--g400);cursor:pointer;transition:.15s;font-family:var(--font);}
+.tab.active{background:var(--g700);color:#fff;}
+
+/* FORM */
+.form-title{font-size:20px;font-weight:600;color:#fff;margin-bottom:4px;}
+.form-sub{font-size:13px;color:var(--g200);margin-bottom:24px;opacity:.7;}
+.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.fg label{font-size:12px;font-weight:500;color:var(--g200);text-transform:uppercase;letter-spacing:.05em;}
+.fg input{padding:11px 14px;border:1.5px solid rgba(82,183,136,.2);border-radius:10px;background:rgba(0,0,0,.25);color:#fff;font-size:15px;font-family:var(--font);outline:none;transition:.15s;}
+.fg input::placeholder{color:rgba(255,255,255,.25);}
+.fg input:focus{border-color:var(--g500);background:rgba(0,0,0,.35);box-shadow:0 0 0 3px rgba(82,183,136,.15);}
+.fg input.error{border-color:var(--red);}
+.err-msg{font-size:12px;color:var(--red);margin-top:4px;display:none;}
+.err-msg.show{display:block;}
+
+/* rank hint */
+.rank-hint{background:rgba(82,183,136,.08);border:1px solid rgba(82,183,136,.15);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--g200);margin-bottom:16px;display:none;}
+.rank-hint.show{display:block;}
+.rank-hint strong{color:var(--g400);}
+
+/* password toggle */
+.pw-wrap{position:relative;}
+.pw-wrap input{width:100%;padding-right:42px;}
+.pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--g400);display:flex;align-items:center;padding:4px;}
+.pw-toggle:hover{color:#fff;}
+
+/* remember / forgot */
+.form-extra{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.remember{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--g200);cursor:pointer;}
+.remember input{accent-color:var(--g500);width:15px;height:15px;}
+.forgot{font-size:13px;color:var(--g400);background:none;border:none;cursor:pointer;font-family:var(--font);}
+.forgot:hover{color:var(--g300);}
+
+.btn-primary{width:100%;padding:13px;background:var(--g600);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font);transition:.15s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-primary:hover{background:var(--g500);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;}
+
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:rgba(255,255,255,.2);font-size:12px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(82,183,136,.15);}
+
+/* demo accounts */
+.demo-section{margin-top:4px;}
+.demo-title{font-size:11px;color:var(--g400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.demo-accounts{display:flex;flex-direction:column;gap:7px;}
+.demo-btn{padding:9px 12px;background:rgba(82,183,136,.06);border:1px solid rgba(82,183,136,.15);border-radius:8px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:.15s;}
+.demo-btn:hover{background:rgba(82,183,136,.12);border-color:rgba(82,183,136,.3);}
+.demo-left{text-align:left;}
+.demo-name{font-size:13px;font-weight:500;color:#fff;}
+.demo-detail{font-size:11px;color:var(--g400);margin-top:1px;font-family:var(--mono);}
+.demo-rank{font-size:12px;font-weight:600;color:var(--g400);font-family:var(--mono);}
+
+footer{text-align:center;padding:20px;font-size:12px;color:rgba(255,255,255,.2);}
+
+/* success overlay */
+.overlay{position:fixed;inset:0;background:var(--g900);display:flex;align-items:center;justify-content:center;z-index:999;opacity:0;pointer-events:none;transition:opacity .3s;}
+.overlay.show{opacity:1;pointer-events:all;}
+.overlay-inner{text-align:center;}
+.overlay-icon{width:64px;height:64px;background:var(--g700);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;animation:popIn .4s ease;}
+.overlay-title{font-size:20px;font-weight:600;color:#fff;margin-bottom:6px;}
+.overlay-sub{font-size:14px;color:var(--g200);}
+@keyframes popIn{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="brand">
+    <div class="brand-icon">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none"><path d="M7 22L10 13L13 18L16 11L19 16L22 10L25 22" stroke="#52B788" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div>
+      <div class="brand-name">KCET Compass</div>
+      <div class="brand-sub">Karnataka College Recommender</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" id="loginTab" onclick="switchTab('login')">Sign In</button>
+      <button class="tab" id="registerTab" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+      <div class="form-title">Welcome back</div>
+      <div class="form-sub">Sign in to see your college recommendations</div>
+      <div class="fg">
+        <label>Email Address</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com"/>
+        <span class="err-msg" id="loginEmailErr">Please enter a valid email</span>
+      </div>
+      <div class="fg">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="loginPwd" placeholder="Enter your password"/>
+          <button class="pw-toggle" onclick="togglePwd('loginPwd',this)" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <span class="err-msg" id="loginPwdErr">Incorrect password</span>
+      </div>
+      <div class="form-extra">
+        <label class="remember"><input type="checkbox" id="rememberMe"/> Remember me</label>
+        <button class="forgot" onclick="alert('Reset link sent! (demo)')">Forgot password?</button>
+      </div>
+      <button class="btn-primary" onclick="doLogin()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Sign In
+      </button>
+      <span class="err-msg show" id="loginGenErr" style="display:none;text-align:center;margin-top:10px;"></span>
+
+      <div class="divider">or try a demo account</div>
+      <div class="demo-section">
+        <div class="demo-title">Demo Accounts</div>
+        <div class="demo-accounts">
+          <button class="demo-btn" onclick="fillDemo('arjun@kcet.com','demo123','Arjun Sharma',25,'GM','CSE')">
+            <div class="demo-left">
+              <div class="demo-name">Arjun Sharma</div>
+              <div class="demo-detail">arjun@kcet.com · GM Category</div>
+            </div>
+            <div class="demo-rank">Rank #25</div>
+          </button>
+          <button class="demo-btn" onclick="fillDemo('priya@kcet.com','demo123','Priya Nair',3500,'OBC','ECE')">
+            <div class="demo-left">
+              <div class="demo-name">Priya Nair</div>
+              <div class="demo-detail">priya@kcet.com · OBC Category</div>
+            </div>
+            <div class="demo-rank">Rank #3500</div>
+          </button>
+          <button class="demo-btn" onclick="fillDemo('rahul@kcet.com','demo123','Rahul Gowda',12000,'SC','MECH')">
+            <div class="demo-left">
+              <div class="demo-name">Rahul Gowda</div>
+              <div class="demo-detail">rahul@kcet.com · SC Category</div>
+            </div>
+            <div class="demo-rank">Rank #12000</div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" style="display:none;">
+      <div class="form-title">Create account</div>
+      <div class="form-sub">Register to get personalised college recommendations</div>
+      <div class="fg">
+        <label>Full Name</label>
+        <input type="text" id="regName" placeholder="Your full name"/>
+        <span class="err-msg" id="regNameErr">Name is required</span>
+      </div>
+      <div class="fg">
+        <label>Email Address</label>
+        <input type="email" id="regEmail" placeholder="you@example.com"/>
+        <span class="err-msg" id="regEmailErr">Enter a valid email</span>
+      </div>
+      <div class="fg">
+        <label>KCET Rank</label>
+        <input type="number" id="regRank" placeholder="e.g. 5000" min="1" max="200000" oninput="showRankHint()"/>
+        <span class="err-msg" id="regRankErr">Enter a valid rank (1–200000)</span>
+      </div>
+      <div class="rank-hint" id="rankHint"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="fg" style="margin-bottom:0;">
+          <label>Category</label>
+          <select id="regCat" style="padding:11px 12px;border:1.5px solid rgba(82,183,136,.2);border-radius:10px;background:rgba(0,0,0,.25);color:#fff;font-size:14px;font-family:var(--font);outline:none;">
+            <option value="GM">GM (General)</option>
+            <option value="OBC">OBC</option>
+            <option value="SC">SC</option>
+            <option value="ST">ST</option>
+          </select>
+        </div>
+        <div class="fg" style="margin-bottom:0;">
+          <label>Preferred Branch</label>
+          <select id="regBranch" style="padding:11px 12px;border:1.5px solid rgba(82,183,136,.2);border-radius:10px;background:rgba(0,0,0,.25);color:#fff;font-size:14px;font-family:var(--font);outline:none;">
+            <option value="CSE">CSE</option>
+            <option value="ISE">ISE</option>
+            <option value="ECE">ECE</option>
+            <option value="EEE">EEE</option>
+            <option value="MECH">Mechanical</option>
+            <option value="CIVIL">Civil</option>
+            <option value="AIML">AI & ML</option>
+            <option value="DS">Data Science</option>
+            <option value="AIDS">AI & Data Science</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg" style="margin-top:16px;">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="regPwd" placeholder="Min. 6 characters"/>
+          <button class="pw-toggle" onclick="togglePwd('regPwd',this)" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <span class="err-msg" id="regPwdErr">Password must be at least 6 characters</span>
+      </div>
+      <button class="btn-primary" style="margin-top:4px;" onclick="doRegister()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        Create Account & Find Colleges
+      </button>
+    </div>
+  </div>
+</div>
+
+<footer>© 2024 KCET Compass · Data from KCET 2024 Round-1 · For reference only</footer>
+
+<!-- SUCCESS OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="overlay-inner">
+    <div class="overlay-icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#52B788" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="overlay-title" id="overlayTitle">Welcome back!</div>
+    <div class="overlay-sub" id="overlaySub">Loading your recommendations...</div>
+  </div>
+</div>
+
+<script>
+// ─── Demo users DB (simulated) ────────────────────────
+const USERS = [
+  {email:"arjun@kcet.com",pwd:"demo123",name:"Arjun Sharma",rank:25,cat:"GM",branch:"CSE"},
+  {email:"priya@kcet.com",pwd:"demo123",name:"Priya Nair",rank:3500,cat:"OBC",branch:"ECE"},
+  {email:"rahul@kcet.com",pwd:"demo123",name:"Rahul Gowda",rank:12000,cat:"SC",branch:"MECH"},
+];
+
+function switchTab(tab) {
+  document.getElementById("loginForm").style.display = tab==="login" ? "block" : "none";
+  document.getElementById("registerForm").style.display = tab==="register" ? "block" : "none";
+  document.getElementById("loginTab").classList.toggle("active", tab==="login");
+  document.getElementById("registerTab").classList.toggle("active", tab==="register");
+}
+
+function togglePwd(id, btn) {
+  const inp = document.getElementById(id);
+  if (inp.type === "password") {
+    inp.type = "text";
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+  } else {
+    inp.type = "password";
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+  }
+}
+
+function fillDemo(email, pwd, name, rank, cat, branch) {
+  document.getElementById("loginEmail").value = email;
+  document.getElementById("loginPwd").value = pwd;
+  // Pre-store so dashboard knows
+  sessionStorage.setItem("kcet_demo", JSON.stringify({name,rank,cat,branch,email}));
+}
+
+function showRankHint() {
+  const rank = parseInt(document.getElementById("regRank").value);
+  const hint = document.getElementById("rankHint");
+  if (!rank || rank < 1) { hint.classList.remove("show"); return; }
+  let tier = "";
+  if (rank <= 100) tier = "🏆 <strong>Top 0.07%</strong> — You can get CSE in ANY top college!";
+  else if (rank <= 500) tier = "🌟 <strong>Top 0.3%</strong> — RVCE, MSRIT, BMSCE CSE are all safe picks";
+  else if (rank <= 2000) tier = "✅ <strong>Top 1.5%</strong> — Excellent! Top aided colleges are safely within reach";
+  else if (rank <= 5000) tier = "👍 <strong>Top 3.5%</strong> — Good rank. Multiple branches in top colleges available";
+  else if (rank <= 15000) tier = "📊 <strong>Top 10%</strong> — Solid rank. Many good colleges and branches available";
+  else if (rank <= 30000) tier = "📌 <strong>Top 20%</strong> — Many private colleges available across Karnataka";
+  else if (rank <= 60000) tier = "📋 <strong>Good rank</strong> — Government & private colleges available in multiple cities";
+  else tier = "📝 <strong>Qualifying rank</strong> — Focus on government colleges and branch preferences";
+  hint.innerHTML = tier;
+  hint.classList.add("show");
+}
+
+function doLogin() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const pwd = document.getElementById("loginPwd").value;
+  let ok = true;
+
+  document.querySelectorAll(".err-msg").forEach(e => e.classList.remove("show"));
+  document.querySelectorAll("input").forEach(e => e.classList.remove("error"));
+
+  if (!email || !email.includes("@")) {
+    document.getElementById("loginEmailErr").classList.add("show");
+    document.getElementById("loginEmail").classList.add("error");
+    ok = false;
+  }
+  if (!pwd) {
+    document.getElementById("loginPwdErr").textContent = "Password is required";
+    document.getElementById("loginPwdErr").classList.add("show");
+    document.getElementById("loginPwd").classList.add("error");
+    ok = false;
+  }
+  if (!ok) return;
+
+  // Check demo accounts
+  const user = USERS.find(u => u.email === email && u.pwd === pwd);
+  const storedDemo = sessionStorage.getItem("kcet_demo");
+
+  let userData = user;
+  if (!userData && storedDemo) {
+    const d = JSON.parse(storedDemo);
+    if (d.email === email) userData = d;
+  }
+
+  if (!userData) {
+    // Allow any email/password as new guest
+    userData = { name: email.split("@")[0], email, rank: null, cat: "GM", branch: "CSE" };
+  }
+
+  sessionStorage.setItem("kcet_user", JSON.stringify(userData));
+
+  // Show overlay
+  const overlay = document.getElementById("overlay");
+  document.getElementById("overlayTitle").textContent = `Welcome, ${userData.name.split(" ")[0]}!`;
+  document.getElementById("overlaySub").textContent = userData.rank
+    ? `Loading recommendations for rank ${userData.rank.toLocaleString("en-IN")}...`
+    : "Loading your dashboard...";
+  overlay.classList.add("show");
+
+  setTimeout(() => { window.location.href = "dashboard.html"; }, 1800);
+}
+
+function doRegister() {
+  const name = document.getElementById("regName").value.trim();
+  const email = document.getElementById("regEmail").value.trim();
+  const rank = parseInt(document.getElementById("regRank").value);
+  const cat = document.getElementById("regCat").value;
+  const branch = document.getElementById("regBranch").value;
+  const pwd = document.getElementById("regPwd").value;
+  let ok = true;
+
+  document.querySelectorAll(".err-msg").forEach(e => e.classList.remove("show"));
+
+  if (!name) { document.getElementById("regNameErr").classList.add("show"); ok = false; }
+  if (!email || !email.includes("@")) { document.getElementById("regEmailErr").classList.add("show"); ok = false; }
+  if (!rank || rank < 1 || rank > 200000) { document.getElementById("regRankErr").classList.add("show"); ok = false; }
+  if (!pwd || pwd.length < 6) { document.getElementById("regPwdErr").classList.add("show"); ok = false; }
+  if (!ok) return;
+
+  const userData = { name, email, rank, cat, branch };
+  sessionStorage.setItem("kcet_user", JSON.stringify(userData));
+
+  const overlay = document.getElementById("overlay");
+  document.getElementById("overlayTitle").textContent = `Welcome, ${name.split(" ")[0]}!`;
+  document.getElementById("overlaySub").textContent = `Finding colleges for rank ${rank.toLocaleString("en-IN")}...`;
+  overlay.classList.add("show");
+
+  setTimeout(() => { window.location.href = "dashboard.html"; }, 1800);
+}
+
+// Enter key support
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    const active = document.getElementById("loginForm").style.display !== "none";
+    if (active) doLogin(); else doRegister();
+  }
+});
+</script>
+</body>
+</html>

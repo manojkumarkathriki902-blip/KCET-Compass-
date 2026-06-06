@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>KCET Compass — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g900:#081c15;--g800:#1b4332;--g700:#2d6a4f;--g600:#40916c;--g500:#52b788;--g400:#74c69d;--g300:#95d5b2;--g200:#b7e4c7;--g100:#d8f3dc;--g50:#f0fdf4;
+  --amber:#f59e0b;--amber100:#fef3c7;--amber800:#78350f;
+  --red:#ef4444;--red100:#fee2e2;--red800:#7f1d1d;
+  --blue:#3b82f6;--blue100:#dbeafe;--blue800:#1e3a5f;
+  --gray900:#111827;--gray800:#1f2937;--gray700:#374151;--gray600:#4b5563;--gray500:#6b7280;--gray400:#9ca3af;--gray300:#d1d5db;--gray200:#e5e7eb;--gray100:#f3f4f6;--gray50:#f9fafb;
+  --font:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;
+}
+body{font-family:var(--font);background:var(--gray50);color:var(--gray900);-webkit-font-smoothing:antialiased;min-height:100vh;}
+
+/* TOPBAR */
+.topbar{background:var(--g900);height:58px;display:flex;align-items:center;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(82,183,136,.15);}
+.topbar-inner{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;width:100%;}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:16px;font-weight:600;text-decoration:none;}
+.logo svg{flex-shrink:0;}
+.topbar-right{display:flex;align-items:center;gap:16px;}
+.user-pill{display:flex;align-items:center;gap:8px;background:rgba(82,183,136,.1);border:1px solid rgba(82,183,136,.2);border-radius:100px;padding:5px 14px 5px 5px;}
+.user-avatar{width:28px;height:28px;background:var(--g700);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;}
+.user-name{font-size:13px;color:var(--g200);font-weight:500;}
+.topbar-nav{display:flex;gap:4px;}
+.tnav{padding:6px 14px;border-radius:8px;font-size:13px;font-weight:500;color:var(--g300);background:none;border:none;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px;transition:.15s;font-family:var(--font);}
+.tnav:hover,.tnav.active{background:rgba(82,183,136,.1);color:#fff;}
+.logout-btn{padding:6px 14px;border-radius:8px;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);background:none;border:1px solid rgba(255,255,255,.1);cursor:pointer;font-family:var(--font);transition:.15s;}
+.logout-btn:hover{background:rgba(255,255,255,.05);color:#fff;}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:28px 24px 64px;}
+
+/* GREETING BANNER */
+.greet-banner{background:linear-gradient(120deg,var(--g900) 0%,var(--g800) 100%);border-radius:16px;padding:28px 32px;margin-bottom:24px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:20px;border:1px solid rgba(82,183,136,.15);}
+.greet-title{font-size:22px;font-weight:600;color:#fff;margin-bottom:6px;letter-spacing:-.02em;}
+.greet-sub{font-size:14px;color:var(--g200);font-weight:300;}
+.rank-display{text-align:right;}
+.rank-label{font-size:11px;color:var(--g400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.rank-num{font-size:42px;font-weight:600;color:var(--g400);font-family:var(--mono);line-height:1;}
+.rank-tier{font-size:12px;color:var(--g300);margin-top:4px;}
+.rank-no-set{font-size:15px;color:var(--g400);}
+
+/* QUICK STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{background:#fff;border:1px solid var(--gray200);border-radius:12px;padding:18px 20px;}
+.stat-card .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:500;margin-bottom:6px;}
+.stat-card .val{font-size:28px;font-weight:600;font-family:var(--mono);line-height:1;}
+.stat-card .sub{font-size:12px;color:var(--gray500);margin-top:4px;}
+.safe-card .lbl,.safe-card .val{color:var(--g700);}
+.mod-card .lbl,.mod-card .val{color:var(--amber800);}
+.reach-card .lbl,.reach-card .val{color:var(--red800);}
+.total-card .lbl{color:var(--gray500);}
+.total-card .val{color:var(--gray800);}
+
+/* LAYOUT GRID */
+.layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
+
+/* FILTER PANEL */
+.panel{background:#fff;border:1px solid var(--gray200);border-radius:14px;padding:20px;}
+.panel-title{font-size:14px;font-weight:600;color:var(--gray800);margin-bottom:16px;display:flex;align-items:center;gap:6px;}
+.fgroup{margin-bottom:16px;}
+.fgroup label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--gray500);display:block;margin-bottom:6px;}
+.fgroup input,.fgroup select{width:100%;padding:9px 10px;border:1.5px solid var(--gray200);border-radius:8px;font-size:14px;color:var(--gray800);background:var(--gray50);font-family:var(--font);outline:none;transition:.15s;}
+.fgroup input:focus,.fgroup select:focus{border-color:var(--g500);background:#fff;}
+.fgroup select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:32px;appearance:none;}
+.apply-btn{width:100%;padding:10px;background:var(--g800);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font);transition:.15s;}
+.apply-btn:hover{background:var(--g700);}
+.reset-btn{width:100%;padding:9px;background:none;color:var(--gray500);border:1.5px solid var(--gray200);border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--font);margin-top:8px;transition:.15s;}
+.reset-btn:hover{border-color:var(--gray400);color:var(--gray700);}
+
+.rank-entry{background:var(--g50);border:1.5px solid var(--g200);border-radius:10px;padding:12px;margin-bottom:16px;}
+.rank-entry-title{font-size:12px;color:var(--g700);font-weight:600;margin-bottom:8px;}
+.rank-entry input{border-color:var(--g200)!important;background:#fff!important;}
+.rank-entry input:focus{border-color:var(--g500)!important;}
+
+/* RESULTS */
+.results-area{}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.results-title{font-size:15px;font-weight:600;color:var(--gray800);}
+.chips{display:flex;gap:6px;flex-wrap:wrap;}
+.chip{padding:5px 14px;border-radius:100px;font-size:12px;font-weight:500;border:1.5px solid var(--gray200);background:#fff;color:var(--gray600);cursor:pointer;transition:.15s;}
+.chip:hover{border-color:var(--gray400);}
+.chip.on{background:var(--g800);border-color:var(--g800);color:#fff;}
+.college-list{display:flex;flex-direction:column;gap:10px;}
+.ccard{background:#fff;border:1px solid var(--gray200);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;border-left:3px solid transparent;transition:.15s;}
+.ccard:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-1px);}
+.ccard.safe{border-left-color:var(--g500);}
+.ccard.moderate{border-left-color:var(--amber);}
+.ccard.reach{border-left-color:var(--red);}
+.cname{font-size:15px;font-weight:600;color:var(--gray900);margin-bottom:5px;}
+.cmeta{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--gray500);margin-bottom:10px;}
+.cmeta span{display:flex;align-items:center;gap:4px;}
+.branches{display:flex;flex-wrap:wrap;gap:5px;}
+.bp{padding:3px 9px;border-radius:100px;font-size:11px;font-weight:500;border:1px solid var(--gray200);background:var(--gray100);color:var(--gray600);}
+.bp.safe{background:var(--g100);color:var(--g700);border-color:var(--g300);}
+.bp .co{font-family:var(--mono);font-size:10px;opacity:.7;margin-left:3px;}
+.cright{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+.badge{padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+.badge.safe{background:var(--g100);color:var(--g700);}
+.badge.moderate{background:var(--amber100);color:var(--amber800);}
+.badge.reach{background:var(--red100);color:var(--red800);}
+.clbl{font-size:10px;color:var(--gray400);text-transform:uppercase;letter-spacing:.05em;}
+.cval{font-size:18px;font-weight:600;font-family:var(--mono);color:var(--gray800);}
+.empty{text-align:center;padding:48px 24px;color:var(--gray500);}
+.empty .ei{font-size:40px;margin-bottom:12px;}
+.no-rank-banner{background:linear-gradient(120deg,var(--g50),#fff);border:1.5px solid var(--g200);border-radius:12px;padding:24px;text-align:center;}
+.no-rank-banner .nr-icon{font-size:32px;margin-bottom:10px;}
+.no-rank-banner h3{font-size:16px;font-weight:600;color:var(--g800);margin-bottom:6px;}
+.no-rank-banner p{font-size:13px;color:var(--gray600);margin-bottom:16px;}
+
+/* COLLEGE DIRECTORY LINK */
+.dir-card{background:linear-gradient(120deg,var(--g900),var(--g800));border-radius:14px;padding:20px 24px;margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid rgba(82,183,136,.2);}
+.dir-card h3{font-size:15px;font-weight:600;color:#fff;margin-bottom:4px;}
+.dir-card p{font-size:13px;color:var(--g200);}
+.dir-btn{background:var(--g600);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font);white-space:nowrap;text-decoration:none;display:inline-block;transition:.15s;}
+.dir-btn:hover{background:var(--g500);}
+
+@media(max-width:768px){
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .layout{grid-template-columns:1fr;}
+  .greet-banner{grid-template-columns:1fr;}
+  .rank-display{text-align:left;}
+  .topbar-nav{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="login.html">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#1B4332"/><path d="M7 22L10 13L13 18L16 11L19 16L22 10L25 22" stroke="#52B788" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      KCET Compass
+    </a>
+    <div class="topbar-right">
+      <div class="topbar-nav">
+        <a class="tnav active" href="dashboard.html">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </a>
+        <a class="tnav" href="colleges.html">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          All Colleges
+        </a>
+      </div>
+      <div class="user-pill">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <span class="user-name" id="userName">User</span>
+      </div>
+      <button class="logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- GREETING -->
+  <div class="greet-banner">
+    <div>
+      <div class="greet-title" id="greetTitle">Welcome back!</div>
+      <div class="greet-sub" id="greetSub">Here are your personalised college recommendations based on your KCET rank.</div>
+    </div>
+    <div class="rank-display" id="rankDisplay">
+      <div class="rank-label">Your Rank</div>
+      <div class="rank-num" id="rankNum">—</div>
+      <div class="rank-tier" id="rankTier"></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card safe-card"><div class="lbl">Safe Picks</div><div class="val" id="statSafe">0</div><div class="sub">High chance</div></div>
+    <div class="stat-card mod-card"><div class="lbl">Moderate</div><div class="val" id="statMod">0</div><div class="sub">Borderline</div></div>
+    <div class="stat-card reach-card"><div class="lbl">Reach</div><div class="val" id="statReach">0</div><div class="sub">Apply anyway</div></div>
+    <div class="stat-card total-card"><div class="lbl">Total Matches</div><div class="val" id="statTotal">0</div><div class="sub">Colleges found</div></div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- FILTER PANEL -->
+    <div>
+      <div class="panel">
+        <div class="panel-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          Filters
+        </div>
+        <div class="rank-entry">
+          <div class="rank-entry-title">📊 Update Your Rank</div>
+          <div class="fgroup" style="margin-bottom:8px;">
+            <label>KCET Rank</label>
+            <input type="number" id="fRank" placeholder="e.g. 5000" min="1" max="200000"/>
+          </div>
+          <div class="fgroup" style="margin-bottom:0;">
+            <label>Category</label>
+            <select id="fCat">
+              <option value="GM">General Merit (GM)</option>
+              <option value="OBC">OBC</option>
+              <option value="SC">SC</option>
+              <option value="ST">ST</option>
+            </select>
+          </div>
+        </div>
+        <div class="fgroup">
+          <label>Preferred Branch</label>
+          <select id="fBranch">
+            <option value="all">All Branches</option>
+            <option value="CSE">Computer Science (CSE)</option>
+            <option value="ISE">Information Science (ISE)</option>
+            <option value="ECE">Electronics & Comm (ECE)</option>
+            <option value="EEE">Electrical (EEE)</option>
+            <option value="MECH">Mechanical</option>
+            <option value="CIVIL">Civil</option>
+            <option value="AIML">AI & Machine Learning</option>
+            <option value="DS">Data Science</option>
+            <option value="AIDS">AI & Data Science</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <label>Location</label>
+          <select id="fLoc">
+            <option value="all">All Karnataka</option>
+            <option value="Bengaluru">Bengaluru</option>
+            <option value="Mysuru">Mysuru</option>
+            <option value="Mangaluru">Mangaluru</option>
+            <option value="Hubballi">Hubballi / Dharwad</option>
+            <option value="Belagavi">Belagavi</option>
+            <option value="Tumkuru">Tumkuru</option>
+            <option value="Hassan">Hassan</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <label>College Type</label>
+          <select id="fType">
+            <option value="all">All Types</option>
+            <option value="govt">Government</option>
+            <option value="aided">Private-Aided</option>
+            <option value="deemed">Deemed/University</option>
+            <option value="private">Private-Unaided</option>
+          </select>
+        </div>
+        <button class="apply-btn" onclick="applyFilters()">Apply & Search</button>
+        <button class="reset-btn" onclick="resetFilters()">Reset Filters</button>
+      </div>
+
+      <a href="colleges.html" class="dir-card" style="text-decoration:none;display:flex;">
+        <div>
+          <h3>📚 Full College Directory</h3>
+          <p>Browse all 200+ Karnataka engineering colleges</p>
+        </div>
+        <span class="dir-btn">Browse →</span>
+      </a>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results-area">
+      <div class="results-header">
+        <div class="results-title" id="resultsTitle">Results</div>
+        <div class="chips" id="filterChips"></div>
+      </div>
+      <div id="collegeList"></div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ─── College Data ──────────────────────────────────────
+const COLLEGES = [
+  {name:"R.V. College of Engineering",short:"RVCE",loc:"Bengaluru",type:"aided",acc:"NAAC A++",b:{CSE:450,ISE:600,ECE:900,EEE:2200,MECH:3500,CIVIL:5000,AIML:800,DS:700,AIDS:750}},
+  {name:"M.S. Ramaiah Institute of Technology",short:"MSRIT",loc:"Bengaluru",type:"aided",acc:"NAAC A+",b:{CSE:600,ISE:900,ECE:1800,EEE:3000,MECH:4500,CIVIL:8000,AIML:1000,DS:1100}},
+  {name:"B.M.S. College of Engineering",short:"BMSCE",loc:"Bengaluru",type:"aided",acc:"NAAC A",b:{CSE:800,ISE:1100,ECE:2200,EEE:4000,MECH:6000,CIVIL:9000,AIML:1200,DS:1300}},
+  {name:"P.E.S. University",short:"PESU",loc:"Bengaluru",type:"deemed",acc:"NAAC A+",b:{CSE:1200,ISE:1600,ECE:3000,EEE:5000,MECH:7500,AIML:1400,DS:1500}},
+  {name:"University Visvesvaraya College of Engineering",short:"UVCE",loc:"Bengaluru",type:"govt",acc:"NAAC A",b:{CSE:2000,ISE:3000,ECE:4500,EEE:7500,MECH:10000,CIVIL:14000}},
+  {name:"Manipal Institute of Technology",short:"MIT Manipal",loc:"Mangaluru",type:"deemed",acc:"NAAC A++",b:{CSE:900,ISE:1300,ECE:2500,EEE:5500,MECH:8000,CIVIL:11000,AIML:1100}},
+  {name:"S.J. College of Engineering",short:"SJCE",loc:"Mysuru",type:"govt",acc:"NAAC A+",b:{CSE:1800,ISE:2500,ECE:4000,EEE:6500,MECH:9500,CIVIL:13000}},
+  {name:"National Institute of Engineering",short:"NIE",loc:"Mysuru",type:"aided",acc:"NAAC A",b:{CSE:2500,ISE:3500,ECE:5000,EEE:7000,MECH:9000,CIVIL:12000}},
+  {name:"Siddaganga Institute of Technology",short:"SIT",loc:"Tumkuru",type:"aided",acc:"NAAC A+",b:{CSE:3500,ISE:5000,ECE:8500,EEE:12000,MECH:17000,CIVIL:22000}},
+  {name:"Ramaiah University of Applied Sciences",short:"RUAS",loc:"Bengaluru",type:"deemed",acc:"NAAC A+",b:{CSE:2800,ISE:4000,ECE:7000,EEE:11000,MECH:15000,AIML:3000}},
+  {name:"Dayananda Sagar College of Engineering",short:"DSCE",loc:"Bengaluru",type:"private",acc:"NAAC A",b:{CSE:3000,ISE:4000,ECE:7000,EEE:10000,MECH:14000,CIVIL:18000,AIML:3500,DS:3800}},
+  {name:"JSS Academy of Technical Education",short:"JSSATE",loc:"Bengaluru",type:"private",acc:"NAAC A",b:{CSE:4000,ISE:5500,ECE:9000,EEE:13000,MECH:17000,CIVIL:21000,AIDS:4500}},
+  {name:"KLE Technological University",short:"KLE Tech",loc:"Hubballi",type:"deemed",acc:"NAAC A+",b:{CSE:5000,ISE:7000,ECE:10000,EEE:15000,MECH:18000,CIVIL:22000}},
+  {name:"Basaveshwar Engineering College",short:"BEC",loc:"Belagavi",type:"aided",acc:"NAAC A",b:{CSE:6000,ISE:8500,ECE:12000,EEE:17000,MECH:22000,CIVIL:26000}},
+  {name:"Dr. Ambedkar Institute of Technology",short:"Dr. AIT",loc:"Bengaluru",type:"private",acc:"NAAC A",b:{CSE:5000,ISE:7000,ECE:11000,EEE:15000,MECH:20000,CIVIL:25000,AIML:5500,AIDS:6000}},
+  {name:"CMR Institute of Technology",short:"CMRIT",loc:"Bengaluru",type:"private",acc:"NAAC A+",b:{CSE:6000,ISE:8000,ECE:13000,AIML:7000,AIDS:7500}},
+  {name:"Nitte Meenakshi Institute of Technology",short:"NMIT",loc:"Bengaluru",type:"private",acc:"NAAC A",b:{CSE:5500,ISE:7500,ECE:12000,EEE:16000,MECH:21000,AIDS:6000}},
+  {name:"New Horizon College of Engineering",short:"NHCE",loc:"Bengaluru",type:"private",acc:"NAAC A+",b:{CSE:7000,ISE:9000,ECE:14000,AIML:8000,AIDS:8500,DS:9500}},
+  {name:"JSS Science and Technology University",short:"JSSTU",loc:"Mysuru",type:"deemed",acc:"NAAC A++",b:{CSE:3200,ISE:4500,ECE:7500,EEE:11000,MECH:15000,CIVIL:20000}},
+  {name:"Malnad College of Engineering",short:"MCE",loc:"Hassan",type:"aided",acc:"NAAC A",b:{CSE:4500,ISE:6000,ECE:9500,EEE:13500,MECH:18000,CIVIL:23000}},
+  {name:"NMAM Institute of Technology",short:"NMAMIT",loc:"Mangaluru",type:"deemed",acc:"NAAC A",b:{CSE:6500,ISE:8000,ECE:12500,EEE:17000,MECH:22000,CIVIL:28000}},
+  {name:"BMS Institute of Technology",short:"BMSIT",loc:"Bengaluru",type:"private",acc:"NAAC A",b:{CSE:7500,ISE:9500,ECE:15000,EEE:19000,MECH:24000,AIML:8500}},
+  {name:"Atria Institute of Technology",short:"AIT",loc:"Bengaluru",type:"private",acc:"NAAC A",b:{CSE:7000,ISE:10000,ECE:15000,EEE:19000,MECH:24000,AIDS:8000}},
+  {name:"Global Academy of Technology",short:"GAT",loc:"Bengaluru",type:"private",acc:"NAAC A",b:{CSE:9000,ISE:13000,ECE:18000,EEE:22000,MECH:27000,AIML:10000,AIDS:11000}},
+  {name:"SDM College of Engineering",short:"SDMCET",loc:"Hubballi",type:"aided",acc:"NAAC A",b:{CSE:12000,ISE:16000,ECE:22000,EEE:28000,MECH:33000,CIVIL:40000}},
+  {name:"K.S. Institute of Technology",short:"KSIT",loc:"Bengaluru",type:"private",acc:"NAAC B+",b:{CSE:8000,ISE:11000,ECE:16000,EEE:20000,MECH:25000,AIDS:9000}},
+  {name:"Bapuji Institute of Engineering & Technology",short:"BIET",loc:"Davangere",type:"aided",acc:"NAAC A",b:{CSE:9000,ISE:12000,ECE:17000,EEE:22000,MECH:27000,CIVIL:32000}},
+  {name:"Canara Engineering College",short:"CEC",loc:"Mangaluru",type:"aided",acc:"NAAC A",b:{CSE:14000,ISE:19000,ECE:26000,EEE:33000,MECH:42000,CIVIL:50000}},
+  {name:"Sahyadri College of Engineering",short:"SCET",loc:"Mangaluru",type:"private",acc:"NAAC A",b:{CSE:10000,ISE:14000,ECE:20000,MECH:30000,CIVIL:35000,AIDS:12000}},
+  {name:"Government Engineering College Hassan",short:"GEC Hassan",loc:"Hassan",type:"govt",acc:"NAAC B+",b:{CSE:8000,ECE:14000,EEE:19000,MECH:25000,CIVIL:30000}},
+  {name:"Vidyavardhaka College of Engineering",short:"VVCE",loc:"Mysuru",type:"aided",acc:"NAAC A",b:{CSE:11000,ISE:15000,ECE:21000,EEE:27000,MECH:32000,CIVIL:38000}},
+  {name:"Jawaharlal Nehru National College of Engineering",short:"JNNCE",loc:"Shivamogga",type:"aided",acc:"NAAC A",b:{CSE:13000,ISE:17000,ECE:24000,EEE:30000,MECH:36000,CIVIL:42000}},
+  {name:"BNM Institute of Technology",short:"BNMIT",loc:"Bengaluru",type:"private",acc:"NAAC A",b:{CSE:11000,ISE:14000,ECE:20000,EEE:24000,MECH:28000}},
+  {name:"Presidency University",short:"PU",loc:"Bengaluru",type:"deemed",acc:"NAAC A",b:{CSE:12000,ISE:16000,ECE:22000,AIML:14000,DS:15000}},
+  {name:"RNS Institute of Technology",short:"RNSIT",loc:"Bengaluru",type:"private",acc:"NAAC A",b:{CSE:9500,ISE:13000,ECE:18000,EEE:22000,MECH:27000,AIDS:11000}},
+  {name:"MVJ College of Engineering",short:"MVJCE",loc:"Bengaluru",type:"private",acc:"NAAC A",b:{CSE:10000,ISE:14000,ECE:20000,EEE:25000,MECH:30000}},
+  {name:"Vivekananda College of Engineering",short:"VCET",loc:"Mangaluru",type:"private",acc:"NAAC B+",b:{CSE:20000,ISE:28000,ECE:38000,EEE:48000,MECH:55000,CIVIL:65000}},
+  {name:"East West Institute of Technology",short:"EWIT",loc:"Bengaluru",type:"private",acc:"NAAC B+",b:{CSE:18000,ISE:24000,ECE:32000,EEE:40000,MECH:48000}},
+  {name:"Rajiv Gandhi Institute of Technology",short:"RGIT",loc:"Bengaluru",type:"govt",acc:"NAAC A",b:{CSE:16000,ISE:22000,ECE:30000,EEE:38000,MECH:46000}},
+  {name:"Government S.K.S.J.T. Institute",short:"GSKSJT",loc:"Bengaluru",type:"govt",acc:"NAAC B+",b:{CSE:20000,ECE:34000,EEE:45000,MECH:55000}},
+];
+
+const MULT = {GM:1,OBC:1.15,SC:1.6,ST:1.8};
+const BNAMES = {CSE:"Computer Science",ISE:"Information Science",ECE:"Electronics & Comm",EEE:"Electrical",MECH:"Mechanical",CIVIL:"Civil",AIML:"AI & ML",DS:"Data Science",AIDS:"AI & Data Science"};
+const TYPE_LABEL = {govt:"Government",aided:"Private-Aided",deemed:"Deemed",private:"Private-Unaided"};
+
+let user = null;
+let allResults = [];
+let currentFilter = "all";
+
+// ─── Init ─────────────────────────────────────────────
+window.onload = function() {
+  const stored = sessionStorage.getItem("kcet_user");
+  if (!stored) { window.location.href = "login.html"; return; }
+  user = JSON.parse(stored);
+
+  // Set UI
+  const first = user.name.split(" ")[0];
+  document.getElementById("userAvatar").textContent = first[0].toUpperCase();
+  document.getElementById("userName").textContent = first;
+  document.getElementById("greetTitle").textContent = `Hello, ${first}! 👋`;
+
+  if (user.rank) {
+    document.getElementById("rankNum").textContent = user.rank.toLocaleString("en-IN");
+    document.getElementById("rankTier").textContent = getTier(user.rank);
+    document.getElementById("greetSub").textContent = `Showing colleges matched to your rank ${user.rank.toLocaleString("en-IN")} — ${user.cat} category.`;
+
+    // Pre-fill filters
+    document.getElementById("fRank").value = user.rank;
+    document.getElementById("fCat").value = user.cat || "GM";
+    if (user.branch) document.getElementById("fBranch").value = user.branch;
+
+    // Auto-run
+    applyFilters();
+  } else {
+    document.getElementById("rankNum").innerHTML = `<span class="rank-no-set">Not set</span>`;
+    document.getElementById("greetSub").textContent = "Enter your KCET rank in the filter panel to see personalised recommendations.";
+    renderNoRank();
+  }
+};
+
+function getTier(rank) {
+  if (rank <= 100) return "Top 0.07% — Elite tier";
+  if (rank <= 500) return "Top 0.3% — Outstanding";
+  if (rank <= 2000) return "Top 1.5% — Excellent";
+  if (rank <= 5000) return "Top 3.5% — Very Good";
+  if (rank <= 15000) return "Top 10% — Good";
+  if (rank <= 30000) return "Top 20% — Above average";
+  if (rank <= 60000) return "Qualifying rank";
+  return "Qualifying rank";
+}
+
+function chance(rank, cut, cat) {
+  const adj = Math.round(cut * MULT[cat]);
+  if (rank <= adj * 0.85) return "safe";
+  if (rank <= adj * 1.10) return "moderate";
+  return "reach";
+}
+
+function applyFilters() {
+  const rank = parseInt(document.getElementById("fRank").value);
+  const cat = document.getElementById("fCat").value;
+  const branch = document.getElementById("fBranch").value;
+  const loc = document.getElementById("fLoc").value;
+  const type = document.getElementById("fType").value;
+
+  if (!rank || rank < 1) { renderNoRank(); return; }
+
+  // Update user rank display
+  document.getElementById("rankNum").textContent = rank.toLocaleString("en-IN");
+  document.getElementById("rankTier").textContent = getTier(rank);
+
+  // Save updated rank
+  user.rank = rank; user.cat = cat;
+  sessionStorage.setItem("kcet_user", JSON.stringify(user));
+
+  allResults = [];
+  COLLEGES.forEach(c => {
+    if (loc !== "all" && !c.loc.includes(loc)) return;
+    if (type !== "all" && c.type !== type) return;
+    const keys = branch === "all" ? Object.keys(c.b) : (c.b[branch] !== undefined ? [branch] : []);
+    if (!keys.length) return;
+    const matched = [];
+    let best = Infinity;
+    keys.forEach(k => {
+      const adj = Math.round(c.b[k] * MULT[cat]);
+      if (rank <= adj * 1.4) {
+        matched.push({code:k,cut:c.b[k],adj,ch:chance(rank,c.b[k],cat)});
+        if (c.b[k] < best) best = c.b[k];
+      }
+    });
+    if (matched.length) {
+      const ov = chance(rank, best, cat);
+      allResults.push({...c, matched, ov, best});
+    }
+  });
+
+  const ord = {safe:0,moderate:1,reach:2};
+  allResults.sort((a,b) => ord[a.ov]-ord[b.ov] || a.best-b.best);
+
+  const safe = allResults.filter(r=>r.ov==="safe").length;
+  const mod = allResults.filter(r=>r.ov==="moderate").length;
+  const reach = allResults.filter(r=>r.ov==="reach").length;
+
+  document.getElementById("statSafe").textContent = safe;
+  document.getElementById("statMod").textContent = mod;
+  document.getElementById("statReach").textContent = reach;
+  document.getElementById("statTotal").textContent = allResults.length;
+
+  currentFilter = "all";
+  renderResults(safe, mod, reach);
+}
+
+function renderResults(safe, mod, reach) {
+  document.getElementById("filterChips").innerHTML = `
+    <button class="chip ${currentFilter==="all"?"on":""}" onclick="setChip('all')">All (${allResults.length})</button>
+    <button class="chip ${currentFilter==="safe"?"on":""}" onclick="setChip('safe')">✓ Safe (${safe||document.getElementById("statSafe").textContent})</button>
+    <button class="chip ${currentFilter==="moderate"?"on":""}" onclick="setChip('moderate')">~ Moderate (${mod||document.getElementById("statMod").textContent})</button>
+    <button class="chip ${currentFilter==="reach"?"on":""}" onclick="setChip('reach')">↑ Reach (${reach||document.getElementById("statReach").textContent})</button>
+  `;
+
+  const shown = currentFilter === "all" ? allResults : allResults.filter(r => r.ov === currentFilter);
+  const lbl = {safe:"✓ Safe",moderate:"~ Moderate",reach:"↑ Reach"};
+
+  document.getElementById("resultsTitle").textContent = `${shown.length} college${shown.length!==1?"s":""} found`;
+
+  if (!shown.length) {
+    document.getElementById("collegeList").innerHTML = `<div class="empty"><div class="ei">🔍</div><p>No colleges in this category.</p></div>`;
+    return;
+  }
+
+  document.getElementById("collegeList").innerHTML = `<div class="college-list">${shown.map((c,i) => {
+    const pills = c.matched.map(b => `<span class="bp ${b.ch==="safe"?"safe":""}">${b.code}<span class="co">≤${b.adj.toLocaleString("en-IN")}</span></span>`).join("");
+    return `<div class="ccard ${c.ov}" style="animation:fadeUp .25s ${i*30}ms both;">
+      <div>
+        <div class="cname">${c.name}</div>
+        <div class="cmeta">
+          <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 13 8 13s8-7.75 8-13a8 8 0 0 0-8-8z"/></svg>${c.loc}</span>
+          <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>${TYPE_LABEL[c.type]}</span>
+          <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>${c.acc}</span>
+        </div>
+        <div class="branches">${pills}</div>
+      </div>
+      <div class="cright">
+        <span class="badge ${c.ov}">${lbl[c.ov]}</span>
+        <div><div class="clbl">Best cutoff</div><div class="cval">${c.best.toLocaleString("en-IN")}</div></div>
+      </div>
+    </div>`;
+  }).join("")}</div>`;
+}
+
+function renderNoRank() {
+  document.getElementById("statSafe").textContent = "—";
+  document.getElementById("statMod").textContent = "—";
+  document.getElementById("statReach").textContent = "—";
+  document.getElementById("statTotal").textContent = "—";
+  document.getElementById("filterChips").innerHTML = "";
+  document.getElementById("resultsTitle").textContent = "Results";
+  document.getElementById("collegeList").innerHTML = `
+    <div class="no-rank-banner">
+      <div class="nr-icon">🎯</div>
+      <h3>Enter Your KCET Rank</h3>
+      <p>Enter your rank in the filter panel on the left to instantly see all colleges where you have a chance of admission — sorted by Safe, Moderate, and Reach.</p>
+    </div>`;
+}
+
+function setChip(f) {
+  currentFilter = f;
+  renderResults();
+}
+
+function resetFilters() {
+  if (user.rank) document.getElementById("fRank").value = user.rank;
+  document.getElementById("fCat").value = user.cat || "GM";
+  document.getElementById("fBranch").value = user.branch || "all";
+  document.getElementById("fLoc").value = "all";
+  document.getElementById("fType").value = "all";
+  applyFilters();
+}
+
+function logout() {
+  sessionStorage.removeItem("kcet_user");
+  sessionStorage.removeItem("kcet_demo");
+  window.location.href = "login.html";
+}
+
+const s = document.createElement("style");
+s.textContent = "@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}";
+document.head.appendChild(s);
+</script>
+</body>
+</html>

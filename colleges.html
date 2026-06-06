@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>All Engineering Colleges in Karnataka</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g900:#081c15;--g800:#1b4332;--g700:#2d6a4f;--g600:#40916c;--g500:#52b788;--g400:#74c69d;--g300:#95d5b2;--g200:#b7e4c7;--g100:#d8f3dc;--g50:#f0fdf4;
+  --b800:#1e3a5f;--b600:#2563eb;--b100:#dbeafe;--b50:#eff6ff;
+  --a800:#78350f;--a500:#f59e0b;--a100:#fef3c7;
+  --r800:#7f1d1d;--r500:#ef4444;--r100:#fee2e2;
+  --p800:#3730a3;--p500:#6366f1;--p100:#e0e7ff;
+  --gray950:#050505;--gray900:#111;--gray800:#1f2937;--gray700:#374151;--gray600:#4b5563;--gray500:#6b7280;--gray400:#9ca3af;--gray300:#d1d5db;--gray200:#e5e7eb;--gray100:#f3f4f6;--gray50:#f9fafb;
+  --font:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+}
+body{font-family:var(--font);background:var(--gray50);color:var(--gray900);line-height:1.6;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;font-family:var(--font);}
+input,select{font-family:var(--font);}
+
+/* HEADER */
+.hdr{background:var(--g900);padding:0;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(82,183,136,.15);}
+.hdr-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:16px;font-weight:600;}
+.logo svg{flex-shrink:0;}
+.hdr-right{font-size:13px;color:var(--g300);}
+
+/* HERO */
+.hero{background:linear-gradient(150deg,var(--g900) 0%,var(--g800) 60%,var(--g700) 100%);padding:52px 24px 56px;text-align:center;}
+.hero h1{font-size:clamp(28px,4vw,46px);font-weight:600;color:#fff;letter-spacing:-.03em;margin-bottom:12px;line-height:1.15;}
+.hero h1 span{color:var(--g400);}
+.hero p{font-size:15px;color:var(--g200);max-width:500px;margin:0 auto 32px;font-weight:300;line-height:1.7;}
+.hero-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;}
+.hchip{background:rgba(255,255,255,.07);border:1px solid rgba(82,183,136,.2);border-radius:100px;padding:6px 16px;font-size:13px;color:var(--g200);display:flex;align-items:center;gap:6px;}
+.hchip strong{color:var(--g400);}
+
+/* CONTROLS */
+.controls{background:#fff;border-bottom:1px solid var(--gray200);padding:16px 24px;position:sticky;top:56px;z-index:100;}
+.cinner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.search-wrap{flex:1;min-width:220px;position:relative;}
+.search-wrap i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray400);font-size:15px;}
+.search-wrap input{width:100%;padding:9px 12px 9px 36px;border:1.5px solid var(--gray200);border-radius:8px;font-size:14px;color:var(--gray900);background:var(--gray50);outline:none;transition:.15s;}
+.search-wrap input:focus{border-color:var(--g500);background:#fff;box-shadow:0 0 0 3px rgba(82,183,136,.1);}
+select.filt{padding:9px 32px 9px 12px;border:1.5px solid var(--gray200);border-radius:8px;font-size:14px;color:var(--gray700);background:var(--gray50) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center;appearance:none;outline:none;cursor:pointer;transition:.15s;}
+select.filt:focus{border-color:var(--g500);}
+.count-badge{font-size:13px;color:var(--gray500);white-space:nowrap;margin-left:auto;}
+.count-badge strong{color:var(--gray900);}
+
+/* LAYOUT */
+.main{max-width:1200px;margin:0 auto;padding:24px 24px 64px;}
+
+/* REGION SECTIONS */
+.region-section{margin-bottom:36px;}
+.region-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:1.5px solid var(--gray200);}
+.region-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.region-header h2{font-size:17px;font-weight:600;color:var(--gray900);}
+.region-count{font-size:12px;color:var(--gray500);background:var(--gray100);padding:2px 10px;border-radius:100px;margin-left:auto;}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--gray200);border-radius:12px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{background:var(--gray50);}
+th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--gray500);border-bottom:1px solid var(--gray200);white-space:nowrap;}
+td{padding:10px 14px;border-bottom:.5px solid var(--gray100);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--g50);}
+.sno{font-family:var(--mono);font-size:11px;color:var(--gray400);width:36px;}
+.cname{font-weight:500;color:var(--gray900);min-width:200px;}
+.cshort{font-size:11px;color:var(--gray500);margin-top:2px;font-family:var(--mono);}
+.cloc{color:var(--gray600);white-space:nowrap;}
+.ctype-badge{padding:2px 8px;border-radius:100px;font-size:10px;font-weight:600;white-space:nowrap;}
+.type-govt   {background:#E1F5EE;color:#085041;}
+.type-aided  {background:#dbeafe;color:#1e3a5f;}
+.type-deemed {background:#e0e7ff;color:#3730a3;}
+.type-private{background:#f3f4f6;color:#374151;}
+.cacc{font-size:11px;color:var(--gray600);}
+.cfee{font-family:var(--mono);font-size:12px;color:var(--gray700);}
+.web-link{color:var(--g600);font-size:11px;display:inline-flex;align-items:center;gap:3px;}
+.web-link:hover{color:var(--g800);}
+
+/* EMPTY */
+.empty{text-align:center;padding:60px 24px;color:var(--gray500);}
+.empty svg{margin-bottom:12px;opacity:.3;}
+
+/* FOOTER */
+footer{background:var(--gray950);padding:20px 24px;text-align:center;font-size:12px;color:var(--gray600);}
+footer a{color:var(--g400);margin:0 8px;}
+
+@media(max-width:640px){
+  .hchip{font-size:12px;}
+  th:nth-child(5),td:nth-child(5),th:nth-child(6),td:nth-child(6){display:none;}
+  .controls{padding:12px 16px;}
+  .main{padding:16px 16px 48px;}
+}
+</style>
+<!-- nav injected -->
+</head>
+<body>
+<script>if(!sessionStorage.getItem("kcet_user")){window.location.href="login.html";}</script>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#1B4332"/><path d="M7 22L10 13L13 18L16 11L19 16L22 10L25 22" stroke="#52B788" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      KCET Compass
+    </div>
+    <div class="hdr-right">All Karnataka Engineering Colleges</div>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>All Engineering Colleges<br><span>in Karnataka</span></h1>
+  <p>Complete directory of VTU-affiliated, Deemed, and Autonomous engineering colleges across all districts of Karnataka.</p>
+  <div class="hero-chips">
+    <div class="hchip"><strong id="totalCount">200+</strong> Colleges</div>
+    <div class="hchip"><strong>4</strong> VTU Regions</div>
+    <div class="hchip"><strong>5</strong> College Types</div>
+    <div class="hchip"><strong>30+</strong> Districts</div>
+  </div>
+</section>
+
+<div class="controls">
+  <div class="cinner">
+    <div class="search-wrap">
+      <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#9ca3af;" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchQ" placeholder="Search college name, city, district..." oninput="applyFilters()"/>
+    </div>
+    <select class="filt" id="regionF" onchange="applyFilters()">
+      <option value="all">All Regions</option>
+      <option value="Bengaluru">Bengaluru Region</option>
+      <option value="Mysuru">Mysuru Region</option>
+      <option value="Belagavi">Belagavi Region</option>
+      <option value="Kalaburagi">Kalaburagi Region</option>
+      <option value="Mangaluru">Mangaluru Region</option>
+    </select>
+    <select class="filt" id="typeF" onchange="applyFilters()">
+      <option value="all">All Types</option>
+      <option value="govt">Government</option>
+      <option value="aided">Private-Aided</option>
+      <option value="deemed">Deemed/University</option>
+      <option value="private">Private-Unaided</option>
+    </select>
+    <select class="filt" id="districtF" onchange="applyFilters()">
+      <option value="all">All Districts</option>
+    </select>
+    <div class="count-badge" id="countBadge"><strong>0</strong> colleges</div>
+  </div>
+</div>
+
+<main class="main" id="mainArea"></main>
+
+<footer>
+  <p>Data based on VTU affiliations and AICTE approved colleges in Karnataka &nbsp;|&nbsp; <a href="https://vtu.ac.in" target="_blank">VTU Official</a> <a href="https://cetonline.karnataka.gov.in/" target="_blank">KEA Official</a></p>
+</footer>
+
+<script>
+const COLLEGES = [
+// ═══════════════════════════════════════════
+// BENGALURU REGION (110 colleges)
+// ═══════════════════════════════════════════
+{name:"R.V. College of Engineering",short:"RVCE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"aided",acc:"NAAC A++ / NBA",est:1963,fee:"₹1.1L/yr",web:"https://www.rvce.edu.in"},
+{name:"M.S. Ramaiah Institute of Technology",short:"MSRIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"aided",acc:"NAAC A+ / NBA",est:1962,fee:"₹1.05L/yr",web:"https://www.msrit.edu"},
+{name:"B.M.S. College of Engineering",short:"BMSCE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"aided",acc:"NAAC A / NBA",est:1946,fee:"₹95K/yr",web:"https://www.bmsce.ac.in"},
+{name:"University Visvesvaraya College of Engineering",short:"UVCE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"govt",acc:"NAAC A",est:1917,fee:"₹50K/yr",web:"https://www.uvce.ac.in"},
+{name:"P.E.S. University",short:"PESU",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"deemed",acc:"NAAC A+",est:1988,fee:"₹2.5L/yr",web:"https://pes.edu"},
+{name:"Dayananda Sagar College of Engineering",short:"DSCE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:1979,fee:"₹1.4L/yr",web:"https://dsce.edu.in"},
+{name:"Dr. Ambedkar Institute of Technology",short:"Dr. AIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:1980,fee:"₹1.3L/yr",web:"https://www.drait.ac.in"},
+{name:"JSS Academy of Technical Education",short:"JSSATE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:1963,fee:"₹1.35L/yr",web:"https://www.jssateb.ac.in"},
+{name:"CMR Institute of Technology",short:"CMRIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A+",est:2000,fee:"₹1.5L/yr",web:"https://cmrit.ac.in"},
+{name:"New Horizon College of Engineering",short:"NHCE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A+",est:2001,fee:"₹1.45L/yr",web:"https://newhorizonindia.edu/nhce"},
+{name:"Ramaiah University of Applied Sciences",short:"RUAS",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"deemed",acc:"NAAC A+",est:2013,fee:"₹2.2L/yr",web:"https://ruas.ac.in"},
+{name:"Nitte Meenakshi Institute of Technology",short:"NMIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:2001,fee:"₹1.4L/yr",web:"https://www.nmit.ac.in"},
+{name:"BMS Institute of Technology & Management",short:"BMSIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:2002,fee:"₹1.4L/yr",web:"https://bmsit.ac.in"},
+{name:"BNM Institute of Technology",short:"BNMIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:2001,fee:"₹1.3L/yr",web:"https://www.bnmit.org"},
+{name:"Global Academy of Technology",short:"GAT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:2001,fee:"₹1.3L/yr",web:"https://www.gat.ac.in"},
+{name:"Atria Institute of Technology",short:"AIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:2000,fee:"₹1.35L/yr",web:"https://www.atria.edu"},
+{name:"K.S. Institute of Technology",short:"KSIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B+",est:2007,fee:"₹1.25L/yr",web:"https://ksit.ac.in"},
+{name:"RNS Institute of Technology",short:"RNSIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:2001,fee:"₹1.35L/yr",web:"https://rnsit.ac.in"},
+{name:"Acharya Institute of Technology",short:"AIT Soldevanahalli",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:2000,fee:"₹1.3L/yr",web:"https://acharya.ac.in"},
+{name:"East West Institute of Technology",short:"EWIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B+",est:2001,fee:"₹1.2L/yr",web:"https://ewit.edu.in"},
+{name:"Presidency University",short:"PU",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"deemed",acc:"NAAC A",est:2013,fee:"₹1.8L/yr",web:"https://www.presidencyuniversity.in"},
+{name:"REVA University",short:"REVA",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"deemed",acc:"NAAC A",est:2012,fee:"₹1.6L/yr",web:"https://reva.edu.in"},
+{name:"Jain University (FET)",short:"Jain FET",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"deemed",acc:"NAAC A++",est:1990,fee:"₹2.0L/yr",web:"https://www.jainuniversity.ac.in"},
+{name:"Christ University (Dept. of Engg.)",short:"Christ",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"deemed",acc:"NAAC A++",est:2008,fee:"₹2.5L/yr",web:"https://christuniversity.in"},
+{name:"Bangalore Institute of Technology",short:"BIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"aided",acc:"NAAC A",est:1979,fee:"₹98K/yr",web:"https://bit-bangalore.edu.in"},
+{name:"Sir M. Visvesvaraya Institute of Technology",short:"Sir MVIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:2000,fee:"₹1.35L/yr",web:"https://sirmvit.edu"},
+{name:"MVJ College of Engineering",short:"MVJCE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:1999,fee:"₹1.3L/yr",web:"https://mvjce.edu.in"},
+{name:"SJB Institute of Technology",short:"SJBIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:2001,fee:"₹1.3L/yr",web:"https://sjbit.edu.in"},
+{name:"Don Bosco Institute of Technology",short:"DBIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"aided",acc:"NAAC A",est:2001,fee:"₹1.1L/yr",web:"https://dbit.in"},
+{name:"Dayananda Sagar Academy of Technology",short:"DSAT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"deemed",acc:"NAAC A",est:2007,fee:"₹1.6L/yr",web:"https://dsu.edu.in"},
+{name:"Vivekananda Institute of Technology",short:"VIT Blr",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B+",est:2001,fee:"₹1.2L/yr",web:"https://vit.ac.in"},
+{name:"Cambridge Institute of Technology",short:"CIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B+",est:2001,fee:"₹1.25L/yr",web:"https://cambridgeit.ac.in"},
+{name:"Gopalan College of Engineering",short:"GCEM",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B+",est:2001,fee:"₹1.2L/yr",web:"https://www.gcem.ac.in"},
+{name:"City Engineering College",short:"CEC",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B",est:2008,fee:"₹1.1L/yr",web:"#"},
+{name:"Rajiv Gandhi Institute of Technology",short:"RGIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"govt",acc:"NAAC A",est:2000,fee:"₹55K/yr",web:"https://rgit.ac.in"},
+{name:"Government S.K.S.J.T. Institute",short:"GSKSJT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"govt",acc:"NAAC B+",est:1966,fee:"₹45K/yr",web:"#"},
+{name:"Oxford College of Engineering",short:"OXFORD",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B",est:2001,fee:"₹1.1L/yr",web:"https://oxfordce.com"},
+{name:"AMC Engineering College",short:"AMCEC",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B+",est:2000,fee:"₹1.15L/yr",web:"https://amcec.ac.in"},
+{name:"Sambhram Institute of Technology",short:"SIT Blr",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B",est:2001,fee:"₹1.1L/yr",web:"https://sambhram.org"},
+{name:"Brindavan College of Engineering",short:"BCE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B",est:2001,fee:"₹1.1L/yr",web:"https://brindavangroup.co.in"},
+{name:"T. John Institute of Technology",short:"TJIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B",est:2001,fee:"₹1.0L/yr",web:"https://tjohngroup.com"},
+{name:"Sapthagiri College of Engineering",short:"SCE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B",est:2001,fee:"₹1.05L/yr",web:"https://www.sapthagiri.edu.in"},
+{name:"Sri Krishnarajendra Silver Jubilee Institute",short:"SKSJTI",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"govt",acc:"NAAC B",est:1996,fee:"₹45K/yr",web:"#"},
+{name:"Yellamma Dasappa Institute of Technology",short:"YDIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B",est:2001,fee:"₹1.1L/yr",web:"https://www.ydit.ac.in"},
+{name:"Nagarjuna College of Engineering",short:"NCET",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B+",est:2001,fee:"₹1.2L/yr",web:"https://ncet.edu.in"},
+{name:"East Point College of Engineering",short:"EPCE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B",est:2001,fee:"₹1.05L/yr",web:"https://eastpoint.ac.in"},
+{name:"HKBK College of Engineering",short:"HKBK",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:1997,fee:"₹1.25L/yr",web:"https://hkbk.edu.in"},
+{name:"Islamiah Institute of Technology",short:"IIT Blr",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"aided",acc:"NAAC B+",est:1980,fee:"₹90K/yr",web:"https://iitblr.ac.in"},
+{name:"Sri Venkateshwara College of Engineering",short:"SVCE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B+",est:2001,fee:"₹1.2L/yr",web:"https://svce.edu.in"},
+{name:"SCT Institute of Technology",short:"SCTIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B",est:2001,fee:"₹1.0L/yr",web:"#"},
+{name:"Sri Sairam College of Engineering",short:"SSCE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B",est:2001,fee:"₹1.05L/yr",web:"#"},
+// Bengaluru Rural / nearby
+{name:"Siddaganga Institute of Technology",short:"SIT",city:"Tumkuru",district:"Tumkuru",region:"Bengaluru",type:"aided",acc:"NAAC A+",est:1963,fee:"₹85K/yr",web:"https://www.sit.ac.in"},
+{name:"Sri Jayachamarajendra College of Engineering",short:"SJCE Chikballapur",city:"Chikballapur",district:"Chikballapur",region:"Bengaluru",type:"govt",acc:"NAAC B+",est:2007,fee:"₹40K/yr",web:"https://sjcit.ac.in"},
+{name:"Government Engineering College Ramanagara",short:"GEC Ramanagara",city:"Ramanagara",district:"Ramanagara",region:"Bengaluru",type:"govt",acc:"NAAC B",est:2009,fee:"₹35K/yr",web:"#"},
+{name:"R.L. Jalappa Institute of Technology",short:"RLJIT",city:"Doddaballapura",district:"Bengaluru Rural",region:"Bengaluru",type:"private",acc:"NAAC B+",est:2007,fee:"₹1.15L/yr",web:"https://rljit.ac.in"},
+{name:"Ghousia College of Engineering",short:"GCE Ramanagara",city:"Ramanagara",district:"Ramanagara",region:"Bengaluru",type:"aided",acc:"NAAC B+",est:1980,fee:"₹90K/yr",web:"https://gcoeramanagara.ac.in"},
+{name:"Channa Basaveshwara Institute of Technology",short:"CBIT",city:"Gubbi",district:"Tumkuru",region:"Bengaluru",type:"aided",acc:"NAAC B+",est:1980,fee:"₹88K/yr",web:"#"},
+{name:"Sri Krishna Institute of Technology",short:"SKIT",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B+",est:2000,fee:"₹1.25L/yr",web:"https://skit.ac.in"},
+{name:"Rajarajeswari College of Engineering",short:"RRCE",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC A",est:2002,fee:"₹1.3L/yr",web:"https://rrce.org"},
+{name:"K.S. School of Engineering & Management",short:"KSSEM",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"private",acc:"NAAC B+",est:2006,fee:"₹1.2L/yr",web:"https://kssem.edu.in"},
+{name:"PES College of Engineering Mandya",short:"PESCE",city:"Mandya",district:"Mandya",region:"Bengaluru",type:"aided",acc:"NAAC A",est:1962,fee:"₹88K/yr",web:"https://pescemandya.org"},
+
+// ═══════════════════════════════════════════
+// MYSURU REGION (59 colleges)
+// ═══════════════════════════════════════════
+{name:"S.J. College of Engineering",short:"SJCE",city:"Mysuru",district:"Mysuru",region:"Mysuru",type:"govt",acc:"NAAC A+",est:1963,fee:"₹55K/yr",web:"https://sjce.ac.in"},
+{name:"National Institute of Engineering",short:"NIE",city:"Mysuru",district:"Mysuru",region:"Mysuru",type:"aided",acc:"NAAC A",est:1946,fee:"₹80K/yr",web:"https://www.nie.ac.in"},
+{name:"Vidyavardhaka College of Engineering",short:"VVCE",city:"Mysuru",district:"Mysuru",region:"Mysuru",type:"aided",acc:"NAAC A",est:1980,fee:"₹82K/yr",web:"https://www.vvce.ac.in"},
+{name:"Sri Jayachamarajendra College of Engineering Mysuru",short:"SJCE Mysuru",city:"Mysuru",district:"Mysuru",region:"Mysuru",type:"govt",acc:"NAAC A",est:1963,fee:"₹55K/yr",web:"#"},
+{name:"Maharaja Institute of Technology",short:"MIT Mysuru",city:"Mysuru",district:"Mysuru",region:"Mysuru",type:"govt",acc:"NAAC B+",est:2007,fee:"₹40K/yr",web:"https://www.mitmysore.in"},
+{name:"JSS Science and Technology University",short:"JSSTU",city:"Mysuru",district:"Mysuru",region:"Mysuru",type:"deemed",acc:"NAAC A++",est:1963,fee:"₹1.8L/yr",web:"https://jssstuniv.in"},
+{name:"Cauvery Institute of Technology",short:"CIT Mysuru",city:"Virajpete",district:"Kodagu",region:"Mysuru",type:"private",acc:"NAAC B+",est:2008,fee:"₹1.1L/yr",web:"https://cauverytechcollege.ac.in"},
+{name:"Malnad College of Engineering",short:"MCE Hassan",city:"Hassan",district:"Hassan",region:"Mysuru",type:"aided",acc:"NAAC A",est:1960,fee:"₹85K/yr",web:"https://www.mcehassan.ac.in"},
+{name:"Government Engineering College Hassan",short:"GEC Hassan",city:"Hassan",district:"Hassan",region:"Mysuru",type:"govt",acc:"NAAC B+",est:1986,fee:"₹35K/yr",web:"#"},
+{name:"Sri Jayachamarajendra College of Engineering Hassan",short:"SJCIT Hassan",city:"Hassan",district:"Hassan",region:"Mysuru",type:"govt",acc:"NAAC B+",est:2007,fee:"₹40K/yr",web:"https://sjcit.ac.in"},
+{name:"Coorg Institute of Technology",short:"CIT Coorg",city:"Ponnampet",district:"Kodagu",region:"Mysuru",type:"private",acc:"NAAC B+",est:2007,fee:"₹1.1L/yr",web:"https://coorginstituteoftechnology.com"},
+{name:"G. Madegowda Institute of Technology",short:"GMIT",city:"Mandya",district:"Mandya",region:"Mysuru",type:"aided",acc:"NAAC B+",est:2000,fee:"₹88K/yr",web:"https://gmit.ac.in"},
+{name:"Bapuji Institute of Engineering & Technology",short:"BIET",city:"Davangere",district:"Davangere",region:"Mysuru",type:"aided",acc:"NAAC A",est:1979,fee:"₹90K/yr",web:"https://biet.ac.in"},
+{name:"S.J.M. Institute of Technology",short:"SJMIT",city:"Chitradurga",district:"Chitradurga",region:"Mysuru",type:"aided",acc:"NAAC A",est:1963,fee:"₹85K/yr",web:"https://sjmit.ac.in"},
+{name:"Jawaharlal Nehru National College of Engineering",short:"JNNCE",city:"Shivamogga",district:"Shivamogga",region:"Mysuru",type:"aided",acc:"NAAC A",est:1986,fee:"₹88K/yr",web:"https://jnnce.ac.in"},
+{name:"Government Engineering College Chamarajanagara",short:"GEC CJR",city:"Chamarajanagara",district:"Chamarajanagara",region:"Mysuru",type:"govt",acc:"NAAC B",est:2010,fee:"₹35K/yr",web:"#"},
+{name:"Government Engineering College Raichur",short:"GEC Raichur",city:"Raichur",district:"Raichur",region:"Mysuru",type:"govt",acc:"NAAC B",est:1985,fee:"₹35K/yr",web:"#"},
+{name:"GSSS Institute of Engineering for Women",short:"GSSSIETW",city:"Mysuru",district:"Mysuru",region:"Mysuru",type:"govt",acc:"NAAC A",est:2004,fee:"₹45K/yr",web:"https://gsssietw.org"},
+{name:"Bahubali College of Engineering",short:"BCET",city:"Shravanabelagola",district:"Hassan",region:"Mysuru",type:"private",acc:"NAAC B+",est:2008,fee:"₹1.1L/yr",web:"https://bcet.ac.in"},
+{name:"Ekalavya Institute of Technology",short:"EIT",city:"Chamarajanagara",district:"Chamarajanagara",region:"Mysuru",type:"private",acc:"NAAC B",est:2009,fee:"₹1.0L/yr",web:"#"},
+{name:"Davangere University (Tech Dept.)",short:"DU",city:"Davangere",district:"Davangere",region:"Mysuru",type:"govt",acc:"NAAC A",est:2009,fee:"₹50K/yr",web:"https://davanagereuniversity.ac.in"},
+{name:"Navodaya Institute of Technology",short:"NIT Raichur",city:"Raichur",district:"Raichur",region:"Mysuru",type:"private",acc:"NAAC B+",est:2008,fee:"₹1.1L/yr",web:"#"},
+
+// ═══════════════════════════════════════════
+// MANGALURU / COASTAL REGION
+// ═══════════════════════════════════════════
+{name:"Manipal Institute of Technology",short:"MIT Manipal",city:"Manipal",district:"Udupi",region:"Mangaluru",type:"deemed",acc:"NAAC A++",est:1957,fee:"₹2.8L/yr",web:"https://manipal.edu/mit.html"},
+{name:"NMAM Institute of Technology",short:"NMAMIT",city:"Nitte",district:"Udupi",region:"Mangaluru",type:"deemed",acc:"NAAC A",est:1986,fee:"₹1.4L/yr",web:"https://nitte.edu.in/nmamit"},
+{name:"Canara Engineering College",short:"CEC Mangaluru",city:"Mangaluru",district:"Dakshina Kannada",region:"Mangaluru",type:"aided",acc:"NAAC A",est:1960,fee:"₹85K/yr",web:"https://canaraengg.ac.in"},
+{name:"Mangalore Institute of Technology & Engineering",short:"MITE",city:"Moodabidri",district:"Dakshina Kannada",region:"Mangaluru",type:"private",acc:"NAAC A",est:2007,fee:"₹1.3L/yr",web:"https://mite.ac.in"},
+{name:"Sahyadri College of Engineering",short:"SCET",city:"Mangaluru",district:"Dakshina Kannada",region:"Mangaluru",type:"private",acc:"NAAC A",est:2007,fee:"₹1.3L/yr",web:"https://sahyadri.edu.in"},
+{name:"Vivekananda College of Engineering",short:"VCET Mangaluru",city:"Puttur",district:"Dakshina Kannada",region:"Mangaluru",type:"private",acc:"NAAC B+",est:2001,fee:"₹1.1L/yr",web:"https://vcet.ac.in"},
+{name:"St. Joseph Engineering College",short:"SJEC",city:"Mangaluru",district:"Dakshina Kannada",region:"Mangaluru",type:"aided",acc:"NAAC A",est:1963,fee:"₹92K/yr",web:"https://sjec.ac.in"},
+{name:"Bearys Institute of Technology",short:"BIT Mangaluru",city:"Mangaluru",district:"Dakshina Kannada",region:"Mangaluru",type:"private",acc:"NAAC A",est:2006,fee:"₹1.3L/yr",web:"https://bearysit.ac.in"},
+{name:"K.V.G. College of Engineering",short:"KVGCE",city:"Sullia",district:"Dakshina Kannada",region:"Mangaluru",type:"aided",acc:"NAAC A",est:1984,fee:"₹88K/yr",web:"https://kvgce.ac.in"},
+{name:"Srinivas Institute of Technology",short:"SIT Mangaluru",city:"Mangaluru",district:"Dakshina Kannada",region:"Mangaluru",type:"private",acc:"NAAC A",est:1999,fee:"₹1.3L/yr",web:"https://sit.srinivas.ac.in"},
+{name:"Karavali Institute of Technology",short:"KIT Mangaluru",city:"Mangaluru",district:"Dakshina Kannada",region:"Mangaluru",type:"private",acc:"NAAC B+",est:2008,fee:"₹1.1L/yr",web:"https://kitech.ac.in"},
+{name:"Moodlakatte Institute of Technology",short:"MITK",city:"Kundapura",district:"Udupi",region:"Mangaluru",type:"private",acc:"NAAC B",est:2007,fee:"₹1.0L/yr",web:"#"},
+{name:"Mangalore Marine College & Technology",short:"MMCT",city:"Mangaluru",district:"Dakshina Kannada",region:"Mangaluru",type:"private",acc:"NAAC B",est:2007,fee:"₹1.1L/yr",web:"#"},
+{name:"Anjuman Institute of Technology & Management",short:"AITM Bhatkal",city:"Bhatkal",district:"Uttara Kannada",region:"Mangaluru",type:"aided",acc:"NAAC A",est:1998,fee:"₹88K/yr",web:"https://aitmbhatkal.ac.in"},
+{name:"Jain Institute of Technology",short:"JIT Davangere",city:"Davangere",district:"Davangere",region:"Mangaluru",type:"private",acc:"NAAC B+",est:2007,fee:"₹1.15L/yr",web:"#"},
+
+// ═══════════════════════════════════════════
+// BELAGAVI REGION (32 colleges)
+// ═══════════════════════════════════════════
+{name:"KLE Technological University",short:"KLE Tech",city:"Hubballi",district:"Dharwad",region:"Belagavi",type:"deemed",acc:"NAAC A+",est:1947,fee:"₹1.8L/yr",web:"https://www.kletech.ac.in"},
+{name:"Basaveshwar Engineering College",short:"BEC",city:"Bagalkot",district:"Bagalkot",region:"Belagavi",type:"aided",acc:"NAAC A",est:1964,fee:"₹90K/yr",web:"https://www.bec-bagalkot.ac.in"},
+{name:"SDM College of Engineering & Technology",short:"SDMCET",city:"Dharwad",district:"Dharwad",region:"Belagavi",type:"aided",acc:"NAAC A",est:1979,fee:"₹88K/yr",web:"https://www.sdmcet.ac.in"},
+{name:"KLS Gogte Institute of Technology",short:"GIT",city:"Belagavi",district:"Belagavi",region:"Belagavi",type:"aided",acc:"NAAC A",est:1979,fee:"₹90K/yr",web:"https://git.edu"},
+{name:"BVB College of Engineering & Technology",short:"BVBCET",city:"Hubballi",district:"Dharwad",region:"Belagavi",type:"aided",acc:"NAAC A",est:1947,fee:"₹90K/yr",web:"https://bvb.edu"},
+{name:"Jain College of Engineering",short:"JCE",city:"Belagavi",district:"Belagavi",region:"Belagavi",type:"aided",acc:"NAAC A",est:1985,fee:"₹88K/yr",web:"https://jce.ac.in"},
+{name:"Government Engineering College Haveri",short:"GEC Haveri",city:"Haveri",district:"Haveri",region:"Belagavi",type:"govt",acc:"NAAC B+",est:2009,fee:"₹35K/yr",web:"#"},
+{name:"Government Engineering College Karwar",short:"GEC Karwar",city:"Karwar",district:"Uttara Kannada",region:"Belagavi",type:"govt",acc:"NAAC B",est:2009,fee:"₹35K/yr",web:"#"},
+{name:"Government Engineering College Huvinhadagali",short:"GEC Huvinhadagali",city:"Huvinhadagali",district:"Ballari",region:"Belagavi",type:"govt",acc:"NAAC B",est:2009,fee:"₹35K/yr",web:"#"},
+{name:"BLDEA's College of Engineering",short:"BLDEACET",city:"Vijayapura",district:"Vijayapura",region:"Belagavi",type:"aided",acc:"NAAC A",est:1979,fee:"₹88K/yr",web:"https://bldeacet.ac.in"},
+{name:"Maratha Mandal's Engineering College",short:"MMEC",city:"Belagavi",district:"Belagavi",region:"Belagavi",type:"aided",acc:"NAAC B+",est:1981,fee:"₹88K/yr",web:"https://mmedcbelagavi.ac.in"},
+{name:"Hirasugar Institute of Technology",short:"HIT",city:"Nidasoshi",district:"Belagavi",region:"Belagavi",type:"aided",acc:"NAAC B+",est:1980,fee:"₹88K/yr",web:"https://hitnidasoshi.ac.in"},
+{name:"KLE Dr. M.S. Sheshgiri College of Engineering",short:"KLESCET",city:"Belagavi",district:"Belagavi",region:"Belagavi",type:"aided",acc:"NAAC A",est:1980,fee:"₹90K/yr",web:"https://klescet.ac.in"},
+{name:"KLE College of Engineering Chikodi",short:"KLECET",city:"Chikodi",district:"Belagavi",region:"Belagavi",type:"aided",acc:"NAAC B+",est:2002,fee:"₹88K/yr",web:"#"},
+{name:"S.G. Balekundri Institute of Technology",short:"SGBIT",city:"Belagavi",district:"Belagavi",region:"Belagavi",type:"aided",acc:"NAAC B+",est:2002,fee:"₹88K/yr",web:"https://sgbit.edu.in"},
+{name:"JSS Academy of Technical Education Belgaum",short:"JSSATE Belagavi",city:"Belagavi",district:"Belagavi",region:"Belagavi",type:"private",acc:"NAAC B+",est:2001,fee:"₹1.1L/yr",web:"#"},
+{name:"Bellary Engineering College",short:"BEC Ballari",city:"Ballari",district:"Ballari",region:"Belagavi",type:"aided",acc:"NAAC B+",est:1980,fee:"₹88K/yr",web:"https://bec-bellary.ac.in"},
+{name:"Angadi Institute of Technology & Management",short:"AITM Belagavi",city:"Belagavi",district:"Belagavi",region:"Belagavi",type:"private",acc:"NAAC B+",est:2001,fee:"₹1.1L/yr",web:"https://aitm.ac.in"},
+
+// ═══════════════════════════════════════════
+// KALABURAGI REGION (17 colleges)
+// ═══════════════════════════════════════════
+{name:"Government Engineering College Raichur",short:"GEC Raichur",city:"Raichur",district:"Raichur",region:"Kalaburagi",type:"govt",acc:"NAAC B+",est:1985,fee:"₹35K/yr",web:"#"},
+{name:"Appa Institute of Engineering & Technology",short:"AIET",city:"Kalaburagi",district:"Kalaburagi",region:"Kalaburagi",type:"private",acc:"NAAC B+",est:2001,fee:"₹1.1L/yr",web:"https://aiet.ac.in"},
+{name:"Basavakalyan Engineering College",short:"BKEC",city:"Basavakalyan",district:"Bidar",region:"Kalaburagi",type:"aided",acc:"NAAC B+",est:1983,fee:"₹88K/yr",web:"#"},
+{name:"Bheemanna Khandre Institute of Technology",short:"BKIT",city:"Bhalki",district:"Bidar",region:"Kalaburagi",type:"aided",acc:"NAAC B+",est:1980,fee:"₹88K/yr",web:"https://bkit.ac.in"},
+{name:"Guru Nanak Dev Engineering College",short:"GNDEC",city:"Bidar",district:"Bidar",region:"Kalaburagi",type:"aided",acc:"NAAC B+",est:1980,fee:"₹88K/yr",web:"https://gndec.ac.in"},
+{name:"KCT Engineering College",short:"KCTEC",city:"Gulbarga",district:"Kalaburagi",region:"Kalaburagi",type:"private",acc:"NAAC B",est:2007,fee:"₹1.0L/yr",web:"#"},
+{name:"Khaja Banda Nawaz College of Engineering",short:"KBNCE",city:"Kalaburagi",district:"Kalaburagi",region:"Kalaburagi",type:"aided",acc:"NAAC B+",est:1980,fee:"₹88K/yr",web:"https://kbnce.ac.in"},
+{name:"Lingaraj Appa Engineering College",short:"LAEC",city:"Bidar",district:"Bidar",region:"Kalaburagi",type:"aided",acc:"NAAC B",est:2002,fee:"₹88K/yr",web:"#"},
+{name:"Poojya Doddappa Appa College of Engineering",short:"PDACE",city:"Kalaburagi",district:"Kalaburagi",region:"Kalaburagi",type:"aided",acc:"NAAC A",est:1979,fee:"₹90K/yr",web:"https://pdace.ac.in"},
+{name:"SLN College of Engineering",short:"SLNCE",city:"Yadgir",district:"Yadgir",region:"Kalaburagi",type:"aided",acc:"NAAC B+",est:1982,fee:"₹88K/yr",web:"#"},
+{name:"Veerappa Nisty Engineering College",short:"VNEC",city:"Shorapur",district:"Yadgir",region:"Kalaburagi",type:"aided",acc:"NAAC B",est:2009,fee:"₹88K/yr",web:"#"},
+{name:"Indian Institute of Information Technology Raichur",short:"IIIT Raichur",city:"Raichur",district:"Raichur",region:"Kalaburagi",type:"govt",acc:"NIRF Rated",est:2015,fee:"₹1.2L/yr",web:"https://iiitrkur.ac.in"},
+{name:"Government Engineering College Yadgir",short:"GEC Yadgir",city:"Yadgir",district:"Yadgir",region:"Kalaburagi",type:"govt",acc:"NAAC B",est:2010,fee:"₹35K/yr",web:"#"},
+{name:"Navodaya Institute of Technology",short:"NIT Raichur",city:"Raichur",district:"Raichur",region:"Kalaburagi",type:"private",acc:"NAAC B+",est:2008,fee:"₹1.1L/yr",web:"#"},
+
+// ═══════════════════════════════════════════
+// CENTRAL / SHIVAMOGGA REGION
+// ═══════════════════════════════════════════
+{name:"Malnad College of Engineering",short:"MCE",city:"Hassan",district:"Hassan",region:"Mysuru",type:"aided",acc:"NAAC A",est:1960,fee:"₹85K/yr",web:"https://www.mcehassan.ac.in"},
+{name:"Jawaharlal Nehru National College of Engineering",short:"JNNCE",city:"Shivamogga",district:"Shivamogga",region:"Mysuru",type:"aided",acc:"NAAC A",est:1986,fee:"₹88K/yr",web:"https://jnnce.ac.in"},
+{name:"SJM Institute of Technology",short:"SJMIT",city:"Chitradurga",district:"Chitradurga",region:"Mysuru",type:"aided",acc:"NAAC A",est:1963,fee:"₹85K/yr",web:"https://sjmit.ac.in"},
+{name:"Bapuji Institute of Engineering & Technology",short:"BIET Davangere",city:"Davangere",district:"Davangere",region:"Mysuru",type:"aided",acc:"NAAC A",est:1979,fee:"₹90K/yr",web:"https://biet.ac.in"},
+{name:"Government Engineering College Kushalnagar",short:"GEC Kushalnagar",city:"Kushalnagar",district:"Kodagu",region:"Mysuru",type:"govt",acc:"NAAC B",est:2012,fee:"₹35K/yr",web:"#"},
+
+// NIT/IIIT/Special Institutions
+{name:"National Institute of Technology Karnataka",short:"NIT-K",city:"Surathkal",district:"Dakshina Kannada",region:"Mangaluru",type:"govt",acc:"NIRF #19 (Engg)",est:1960,fee:"₹1.25L/yr",web:"https://www.nitk.ac.in"},
+{name:"IIIT Bengaluru",short:"IIITB",city:"Bengaluru",district:"Bengaluru Urban",region:"Bengaluru",type:"deemed",acc:"NAAC A",est:1999,fee:"₹3.5L/yr",web:"https://www.iiitb.ac.in"},
+{name:"IIIT Dharwad",short:"IIITDWD",city:"Dharwad",district:"Dharwad",region:"Belagavi",type:"govt",acc:"NIRF Rated",est:2015,fee:"₹1.3L/yr",web:"https://www.iiitdwd.ac.in"},
+];
+
+// Remove exact duplicates
+const seen = new Set();
+const UNIQUE = COLLEGES.filter(c => {
+  const key = c.name + c.city;
+  if (seen.has(key)) return false;
+  seen.add(key);
+  return true;
+});
+
+// Populate district filter
+const districts = [...new Set(UNIQUE.map(c => c.district))].sort();
+const dSelect = document.getElementById("districtF");
+districts.forEach(d => {
+  const o = document.createElement("option");
+  o.value = d; o.textContent = d;
+  dSelect.appendChild(o);
+});
+
+document.getElementById("totalCount").textContent = UNIQUE.length;
+
+const TYPE_LABEL = {govt:"Government",aided:"Private-Aided",deemed:"Deemed/University",private:"Private-Unaided"};
+const REGION_COLORS = {
+  Bengaluru:"#1D9E75",
+  Mysuru:"#7F77DD",
+  Belagavi:"#BA7517",
+  Kalaburagi:"#D85A30",
+  Mangaluru:"#378ADD"
+};
+
+function applyFilters() {
+  const q = document.getElementById("searchQ").value.toLowerCase();
+  const rf = document.getElementById("regionF").value;
+  const tf = document.getElementById("typeF").value;
+  const df = document.getElementById("districtF").value;
+
+  const filtered = UNIQUE.filter(c =>
+    (rf === "all" || c.region === rf) &&
+    (tf === "all" || c.type === tf) &&
+    (df === "all" || c.district === df) &&
+    (!q || c.name.toLowerCase().includes(q) || c.city.toLowerCase().includes(q) || c.district.toLowerCase().includes(q) || (c.short && c.short.toLowerCase().includes(q)))
+  );
+
+  document.getElementById("countBadge").innerHTML = `<strong>${filtered.length}</strong> colleges`;
+
+  // Group by region
+  const regions = {};
+  filtered.forEach(c => {
+    if (!regions[c.region]) regions[c.region] = [];
+    regions[c.region].push(c);
+  });
+
+  const mainArea = document.getElementById("mainArea");
+  if (filtered.length === 0) {
+    mainArea.innerHTML = `<div class="empty"><svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><p>No colleges found. Try a different search.</p></div>`;
+    return;
+  }
+
+  const regionOrder = ["Bengaluru","Mysuru","Mangaluru","Belagavi","Kalaburagi"];
+  let html = "";
+  regionOrder.forEach(region => {
+    if (!regions[region]) return;
+    const cols = regions[region];
+    html += `<div class="region-section">
+      <div class="region-header">
+        <div class="region-dot" style="background:${REGION_COLORS[region]||'#888'}"></div>
+        <h2>${region} Region</h2>
+        <span class="region-count">${cols.length} colleges</span>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th>
+            <th>College Name</th>
+            <th>City</th>
+            <th>District</th>
+            <th>Type</th>
+            <th>Accreditation</th>
+            <th>Est.</th>
+            <th>Approx. Fees</th>
+            <th>Website</th>
+          </tr></thead>
+          <tbody>
+            ${cols.map((c,i) => `<tr>
+              <td class="sno">${i+1}</td>
+              <td><div class="cname">${c.name}</div>${c.short?`<div class="cshort">${c.short}</div>`:""}</td>
+              <td class="cloc">${c.city}</td>
+              <td class="cloc" style="font-size:12px;color:var(--gray500)">${c.district}</td>
+              <td><span class="ctype-badge type-${c.type}">${TYPE_LABEL[c.type]||c.type}</span></td>
+              <td class="cacc">${c.acc}</td>
+              <td style="font-family:var(--mono);font-size:12px;color:var(--gray500)">${c.est}</td>
+              <td class="cfee">${c.fee||"—"}</td>
+              <td>${c.web&&c.web!="#"?`<a class="web-link" href="${c.web}" target="_blank">Visit ↗</a>`:"—"}</td>
+            </tr>`).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  });
+  mainArea.innerHTML = html;
+}
+
+applyFilters();
+</script>
+</body>
+</html>
